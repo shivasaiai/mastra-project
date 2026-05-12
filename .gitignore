@@ -1,10 +1,43 @@
+## Dependencies
 node_modules/
-.env
-.env.*
-!.env.example
+.pnp.*
+.pnpm-store/
+
+## Build output
 dist/
-.DS_Store
+build/
+out/
+*.tsbuildinfo
+
+## Mastra build artifacts (keep config files tracked)
+.mastra/.build/
+.mastra/output/
+
+## Coverage / test artifacts
+coverage/
+.nyc_output/
+
+## Logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+## Local env (never commit secrets)
+.env
+.env.*
+!.env.example
+
+## Tool caches
+.eslintcache
+.stylelintcache
+.parcel-cache/
+.turbo/
+.vite/
+.cache/
+
+## OS / editor
+.DS_Store
+.idea/
+.vscode/
