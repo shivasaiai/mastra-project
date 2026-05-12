@@ -1,0 +1,16 @@
+{"candidate_id":"CAND-101","doc_type":"Passport","document_id":"ID-101-P","document_date":"2024-08-11","valid_to":"2030-08-10","present_in_folder":"Yes","remarks":"Current and legible"}
+{"candidate_id":"CAND-101","doc_type":"Bank Statement","document_id":"ADDR-101-BS","document_date":"2026-01-28","valid_to":"","present_in_folder":"Yes","remarks":"Within 90 days"}
+{"candidate_id":"CAND-101","doc_type":"Basic Disclosure","document_id":"CRIM-101","document_date":"2026-02-10","valid_to":"","present_in_folder":"Yes","remarks":"Clear"}
+{"candidate_id":"CAND-102","doc_type":"Driving Licence","document_id":"ID-102-DL","document_date":"2024-02-01","valid_to":"2029-01-31","present_in_folder":"Yes","remarks":"Current"}
+{"candidate_id":"CAND-102","doc_type":"Utility Bill","document_id":"ADDR-102-UB","document_date":"2025-10-01","valid_to":"","present_in_folder":"Yes","remarks":"Older than 90 days at review"}
+{"candidate_id":"CAND-102","doc_type":"eVisa Share Code","document_id":"RTW-102-SC","document_date":"2026-02-03","valid_to":"","present_in_folder":"Yes","remarks":"Valid at check"}
+{"candidate_id":"CAND-103","doc_type":"Passport","document_id":"ID-103-P","document_date":"2015-11-02","valid_to":"2025-11-01","present_in_folder":"Yes","remarks":"Expired but supports identity corroboration"}
+{"candidate_id":"CAND-103","doc_type":"Student ID","document_id":"ID-103-SID","document_date":"2025-09-01","valid_to":"2026-09-01","present_in_folder":"Yes","remarks":"Current photo ID"}
+{"candidate_id":"CAND-103","doc_type":"Address Proof","document_id":"ADDR-103","document_date":"2026-02-20","valid_to":"","present_in_folder":"Yes","remarks":"Within 90 days"}
+{"candidate_id":"CAND-104","doc_type":"Passport","document_id":"ID-104-P","document_date":"2019-04-10","valid_to":"2029-04-09","present_in_folder":"Yes","remarks":"Current"}
+{"candidate_id":"CAND-104","doc_type":"Address Proof","document_id":"ADDR-104-CT","document_date":"","valid_to":"","present_in_folder":"No","remarks":"Mentioned in note, not retained"}
+{"candidate_id":"CAND-104","doc_type":"Basic Disclosure","document_id":"CRIM-104","document_date":"2026-02-18","valid_to":"","present_in_folder":"Yes","remarks":"Clear"}
+{"candidate_id":"CAND-105","doc_type":"Passport Copy","document_id":"ID-105-P","document_date":"2022-06-05","valid_to":"2032-06-04","present_in_folder":"Yes","remarks":"Current"}
+{"candidate_id":"CAND-105","doc_type":"BRP","document_id":"RTW-105-BRP","document_date":"2022-01-01","valid_to":"2024-12-31","present_in_folder":"Yes","remarks":"Expired"}
+{"candidate_id":"CAND-106","doc_type":"Passport","document_id":"ID-106-P","document_date":"2021-01-15","valid_to":"2031-01-14","present_in_folder":"Yes","remarks":"Current"}
+{"candidate_id":"CAND-106","doc_type":"Bank Statement","document_id":"ADDR-106-BS","document_date":"2026-01-15","valid_to":"","present_in_folder":"Yes","remarks":"Within 90 days"}

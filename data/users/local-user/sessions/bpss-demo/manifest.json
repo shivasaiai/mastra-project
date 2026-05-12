@@ -1,0 +1,364 @@
+{
+  "user_id": "local-user",
+  "session_id": "bpss-demo",
+  "created_at": "2026-05-11T06:39:08.239Z",
+  "updated_at": "2026-05-11T12:49:42.571Z",
+  "files": [
+    {
+      "file_id": "943695d99a50d82b168d60ce",
+      "original_filename": "CAND-101_candidate_pack.docx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "kind": "docx",
+      "size_bytes": 37017,
+      "sha256": "943695d99a50d82b168d60cef3f2b191b7063851249d180208a37726ff04e58c",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:40.581Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/943695d99a50d82b168d60ce/original.docx",
+      "derived_paths": {
+        "markdown": "extracted/docx/943695d99a50d82b168d60ce/document.md",
+        "structure": "extracted/docx/943695d99a50d82b168d60ce/structure.json",
+        "chunks": "extracted/docx/943695d99a50d82b168d60ce/chunks.jsonl"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:40.748Z"
+    },
+    {
+      "file_id": "85f793376e8df3c2b2bb8749",
+      "original_filename": "CAND-102_candidate_pack.docx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "kind": "docx",
+      "size_bytes": 37050,
+      "sha256": "85f793376e8df3c2b2bb8749ceb5d68e749751d8b2c23d3879b51cce46f4b3f3",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:40.754Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/85f793376e8df3c2b2bb8749/original.docx",
+      "derived_paths": {
+        "markdown": "extracted/docx/85f793376e8df3c2b2bb8749/document.md",
+        "structure": "extracted/docx/85f793376e8df3c2b2bb8749/structure.json",
+        "chunks": "extracted/docx/85f793376e8df3c2b2bb8749/chunks.jsonl"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:40.871Z"
+    },
+    {
+      "file_id": "f389520e80dfca2584ad319c",
+      "original_filename": "CAND-103_candidate_pack.docx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "kind": "docx",
+      "size_bytes": 37091,
+      "sha256": "f389520e80dfca2584ad319c373e1b74417b7d94aa9d7a300eb46fb4e0b69da3",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:40.877Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/f389520e80dfca2584ad319c/original.docx",
+      "derived_paths": {
+        "markdown": "extracted/docx/f389520e80dfca2584ad319c/document.md",
+        "structure": "extracted/docx/f389520e80dfca2584ad319c/structure.json",
+        "chunks": "extracted/docx/f389520e80dfca2584ad319c/chunks.jsonl"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:40.953Z"
+    },
+    {
+      "file_id": "c167a115e4d752543fe7adc2",
+      "original_filename": "CAND-104_candidate_pack.docx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "kind": "docx",
+      "size_bytes": 37076,
+      "sha256": "c167a115e4d752543fe7adc23402aef8554ffb3142752a013d780646538626f5",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:40.956Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/c167a115e4d752543fe7adc2/original.docx",
+      "derived_paths": {
+        "markdown": "extracted/docx/c167a115e4d752543fe7adc2/document.md",
+        "structure": "extracted/docx/c167a115e4d752543fe7adc2/structure.json",
+        "chunks": "extracted/docx/c167a115e4d752543fe7adc2/chunks.jsonl"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:41.038Z"
+    },
+    {
+      "file_id": "189909ccf7bd50e2dd5098b1",
+      "original_filename": "CAND-105_candidate_pack.docx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "kind": "docx",
+      "size_bytes": 37039,
+      "sha256": "189909ccf7bd50e2dd5098b1c7c78db3c832d43210bdd5ac27f1e8918fee6af2",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:41.043Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/189909ccf7bd50e2dd5098b1/original.docx",
+      "derived_paths": {
+        "markdown": "extracted/docx/189909ccf7bd50e2dd5098b1/document.md",
+        "structure": "extracted/docx/189909ccf7bd50e2dd5098b1/structure.json",
+        "chunks": "extracted/docx/189909ccf7bd50e2dd5098b1/chunks.jsonl"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:41.129Z"
+    },
+    {
+      "file_id": "90795657611558e6205d34b2",
+      "original_filename": "CAND-106_candidate_pack.docx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "kind": "docx",
+      "size_bytes": 37079,
+      "sha256": "90795657611558e6205d34b234a97bb051a089e20773e12f616e6124741d5f77",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:41.132Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/90795657611558e6205d34b2/original.docx",
+      "derived_paths": {
+        "markdown": "extracted/docx/90795657611558e6205d34b2/document.md",
+        "structure": "extracted/docx/90795657611558e6205d34b2/structure.json",
+        "chunks": "extracted/docx/90795657611558e6205d34b2/chunks.jsonl"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:41.194Z"
+    },
+    {
+      "file_id": "4eaf27472886807b66252936",
+      "original_filename": "Adjudication_Register.pdf",
+      "mime_type": "application/pdf",
+      "kind": "pdf",
+      "size_bytes": 2593,
+      "sha256": "4eaf27472886807b662529364ce6975589bf870ad74e4bb8c7af3a46939e66be",
+      "status": "partial",
+      "uploaded_at": "2026-05-11T12:49:41.197Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/4eaf27472886807b66252936/original.pdf",
+      "derived_paths": {
+        "markdown": "extracted/pdf/4eaf27472886807b66252936/document.md",
+        "document": "extracted/pdf/4eaf27472886807b66252936/document.json",
+        "pages_dir": "extracted/pdf/4eaf27472886807b66252936/pages"
+      },
+      "warnings": [
+        "Page 1: Gemini vision markdown skipped because GEMINI_API_KEY is not configured."
+      ],
+      "extracted_at": "2026-05-11T12:49:41.792Z"
+    },
+    {
+      "file_id": "9883c3011a7ba547feb52cb2",
+      "original_filename": "Analyst_Working_Notes.docx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "kind": "docx",
+      "size_bytes": 37164,
+      "sha256": "9883c3011a7ba547feb52cb26060d22a9e521191dbb02f115bc6fae42566f3e1",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:41.794Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/9883c3011a7ba547feb52cb2/original.docx",
+      "derived_paths": {
+        "markdown": "extracted/docx/9883c3011a7ba547feb52cb2/document.md",
+        "structure": "extracted/docx/9883c3011a7ba547feb52cb2/structure.json",
+        "chunks": "extracted/docx/9883c3011a7ba547feb52cb2/chunks.jsonl"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:41.846Z"
+    },
+    {
+      "file_id": "c509552d1892aa8f63f92da4",
+      "original_filename": "Email_Approvals_and_Escalations.docx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "kind": "docx",
+      "size_bytes": 37041,
+      "sha256": "c509552d1892aa8f63f92da4a2c6c21a3fb31003f3b385b1f5f294aa7618778b",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:41.849Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/c509552d1892aa8f63f92da4/original.docx",
+      "derived_paths": {
+        "markdown": "extracted/docx/c509552d1892aa8f63f92da4/document.md",
+        "structure": "extracted/docx/c509552d1892aa8f63f92da4/structure.json",
+        "chunks": "extracted/docx/c509552d1892aa8f63f92da4/chunks.jsonl"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:41.900Z"
+    },
+    {
+      "file_id": "4a5b8552c7705e8a5d5550ab",
+      "original_filename": "BPSS_Screening_Policy_v3.pdf",
+      "mime_type": "application/pdf",
+      "kind": "pdf",
+      "size_bytes": 3654,
+      "sha256": "4a5b8552c7705e8a5d5550ab7130ab32533b043598ccf1afb88182c0eb930435",
+      "status": "partial",
+      "uploaded_at": "2026-05-11T12:49:41.903Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/4a5b8552c7705e8a5d5550ab/original.pdf",
+      "derived_paths": {
+        "markdown": "extracted/pdf/4a5b8552c7705e8a5d5550ab/document.md",
+        "document": "extracted/pdf/4a5b8552c7705e8a5d5550ab/document.json",
+        "pages_dir": "extracted/pdf/4a5b8552c7705e8a5d5550ab/pages"
+      },
+      "warnings": [
+        "Page 1: Gemini vision markdown skipped because GEMINI_API_KEY is not configured."
+      ],
+      "extracted_at": "2026-05-11T12:49:42.117Z"
+    },
+    {
+      "file_id": "26b982c4429cf2e79db04558",
+      "original_filename": "Screening_Operations_SOP.pdf",
+      "mime_type": "application/pdf",
+      "kind": "pdf",
+      "size_bytes": 2868,
+      "sha256": "26b982c4429cf2e79db04558e20b44e7d8e4f4f929fb7761844fa2baec0e52c8",
+      "status": "partial",
+      "uploaded_at": "2026-05-11T12:49:42.120Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/26b982c4429cf2e79db04558/original.pdf",
+      "derived_paths": {
+        "markdown": "extracted/pdf/26b982c4429cf2e79db04558/document.md",
+        "document": "extracted/pdf/26b982c4429cf2e79db04558/document.json",
+        "pages_dir": "extracted/pdf/26b982c4429cf2e79db04558/pages"
+      },
+      "warnings": [
+        "Page 1: Gemini vision markdown skipped because GEMINI_API_KEY is not configured."
+      ],
+      "extracted_at": "2026-05-11T12:49:42.280Z"
+    },
+    {
+      "file_id": "c870e6d7f628101e24fc4045",
+      "original_filename": "Permitted_RTW_Evidence_Matrix.pdf",
+      "mime_type": "application/pdf",
+      "kind": "pdf",
+      "size_bytes": 2189,
+      "sha256": "c870e6d7f628101e24fc4045a57e7b1bd960d055bfe12d3cbbffa1f80d3e67d3",
+      "status": "partial",
+      "uploaded_at": "2026-05-11T12:49:42.282Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/c870e6d7f628101e24fc4045/original.pdf",
+      "derived_paths": {
+        "markdown": "extracted/pdf/c870e6d7f628101e24fc4045/document.md",
+        "document": "extracted/pdf/c870e6d7f628101e24fc4045/document.json",
+        "pages_dir": "extracted/pdf/c870e6d7f628101e24fc4045/pages"
+      },
+      "warnings": [
+        "Page 1: Gemini vision markdown skipped because GEMINI_API_KEY is not configured."
+      ],
+      "extracted_at": "2026-05-11T12:49:42.429Z"
+    },
+    {
+      "file_id": "2a1a3f1490f6d0f9dc1d9135",
+      "original_filename": "BPSS_case_tracker.xlsx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "kind": "excel",
+      "size_bytes": 9578,
+      "sha256": "2a1a3f1490f6d0f9dc1d9135c3b303d73bf7b2d528d5d62c6d7393a5f3ccad87",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:42.431Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/2a1a3f1490f6d0f9dc1d9135/original.xlsx",
+      "derived_paths": {
+        "workbook": "extracted/excel/2a1a3f1490f6d0f9dc1d9135/workbook.json",
+        "sheets_dir": "extracted/excel/2a1a3f1490f6d0f9dc1d9135/sheets"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:42.481Z"
+    },
+    {
+      "file_id": "502c236b35adef5d4344d32e",
+      "original_filename": "bpps_tracker_export.csv",
+      "mime_type": "text/csv",
+      "kind": "csv",
+      "size_bytes": 733,
+      "sha256": "502c236b35adef5d4344d32eabbbac2f13212f1adee68360d69bfda6af74d888",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:42.490Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/502c236b35adef5d4344d32e/original.csv",
+      "derived_paths": {
+        "workbook": "extracted/excel/502c236b35adef5d4344d32e/workbook.json",
+        "sheets_dir": "extracted/excel/502c236b35adef5d4344d32e/sheets"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:42.513Z"
+    },
+    {
+      "file_id": "1e4b7d50869ffa21cfc5c96f",
+      "original_filename": "document_inventory.csv",
+      "mime_type": "text/csv",
+      "kind": "csv",
+      "size_bytes": 1175,
+      "sha256": "1e4b7d50869ffa21cfc5c96fadf2bab593d22651eaac8cee3ac03ff0aa96e648",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:42.521Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/1e4b7d50869ffa21cfc5c96f/original.csv",
+      "derived_paths": {
+        "workbook": "extracted/excel/1e4b7d50869ffa21cfc5c96f/workbook.json",
+        "sheets_dir": "extracted/excel/1e4b7d50869ffa21cfc5c96f/sheets"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:42.540Z"
+    },
+    {
+      "file_id": "021a4fd2fea00010b08c3e2a",
+      "original_filename": "employment_history.csv",
+      "mime_type": "text/csv",
+      "kind": "csv",
+      "size_bytes": 739,
+      "sha256": "021a4fd2fea00010b08c3e2a26f563171514c0c1e630b44f2192492cb4134378",
+      "status": "ready",
+      "uploaded_at": "2026-05-11T12:49:42.560Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/local-user/sessions/bpss-demo/uploads/021a4fd2fea00010b08c3e2a/original.csv",
+      "derived_paths": {
+        "workbook": "extracted/excel/021a4fd2fea00010b08c3e2a/workbook.json",
+        "sheets_dir": "extracted/excel/021a4fd2fea00010b08c3e2a/sheets"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-11T12:49:42.570Z"
+    }
+  ]
+}

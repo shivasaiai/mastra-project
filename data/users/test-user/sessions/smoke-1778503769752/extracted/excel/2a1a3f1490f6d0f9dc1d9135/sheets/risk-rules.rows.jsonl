@@ -1,0 +1,6 @@
+{"rule_id":"R1","condition":"Mandatory control incomplete","risk_points":"40","explanation":"Any missing mandatory closure control"}
+{"rule_id":"R2","condition":"Stale proof of address","risk_points":"20","explanation":"Address proof older than 90 days at review"}
+{"rule_id":"R3","condition":"Expired RTW evidence","risk_points":"40","explanation":"Expired visa/BRP without current replacement evidence"}
+{"rule_id":"R4","condition":"Unexplained employment gap >31 days","risk_points":"25","explanation":"Gap not documented"}
+{"rule_id":"R5","condition":"Exception approved but still operationally open","risk_points":"10","explanation":"Approved provisional start is not closure"}
+{"rule_id":"R6","condition":"Evidence mentioned in notes but not retained","risk_points":"20","explanation":"Missing auditable copy"}

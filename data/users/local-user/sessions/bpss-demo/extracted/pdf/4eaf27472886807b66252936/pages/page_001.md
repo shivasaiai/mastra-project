@@ -1,0 +1,3 @@
+# Page 1
+
+Adjudication Register Fictional interview dataset for evaluation purposes only. Open and approved exception decisions Case ID Decision Approver(s) Date Scope Notes CAND-102 Provisional start approvedHiring Director; Screening Ops Lead2026-02-06 Start work before DBS onlyCase remains Pending unt CAND-106 Risk Accepted Screening Ops Lead 2026-02-01 Operational start allowed while contractor legalNo explicit waiver of right-t Authority note Only entries in this register constitute formally approved exceptions. Email or manager approval outside this register should not be treated as authorized risk acceptance.

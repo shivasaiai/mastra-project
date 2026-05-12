@@ -1,0 +1,98 @@
+{
+  "sheet_id": "document-inventory",
+  "sheet_name": "document_inventory",
+  "row_count": 16,
+  "column_count": 7,
+  "header_row_index": 1,
+  "table_confidence": "high",
+  "columns": [
+    {
+      "name": "candidate_id",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 16,
+      "sample_values": [
+        "CAND-101",
+        "CAND-102",
+        "CAND-103",
+        "CAND-104",
+        "CAND-105"
+      ]
+    },
+    {
+      "name": "doc_type",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 16,
+      "sample_values": [
+        "Passport",
+        "Bank Statement",
+        "Basic Disclosure",
+        "Driving Licence",
+        "Utility Bill"
+      ]
+    },
+    {
+      "name": "document_id",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 16,
+      "sample_values": [
+        "ID-101-P",
+        "ADDR-101-BS",
+        "CRIM-101",
+        "ID-102-DL",
+        "ADDR-102-UB"
+      ]
+    },
+    {
+      "name": "document_date",
+      "inferred_type": "date",
+      "null_count": 1,
+      "non_null_count": 15,
+      "sample_values": [
+        "2024-08-11",
+        "2026-01-28",
+        "2026-02-10",
+        "2024-02-01",
+        "2025-10-01"
+      ]
+    },
+    {
+      "name": "valid_to",
+      "inferred_type": "date",
+      "null_count": 8,
+      "non_null_count": 8,
+      "sample_values": [
+        "2030-08-10",
+        "2029-01-31",
+        "2025-11-01",
+        "2026-09-01",
+        "2029-04-09"
+      ]
+    },
+    {
+      "name": "present_in_folder",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 16,
+      "sample_values": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "name": "remarks",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 16,
+      "sample_values": [
+        "Current and legible",
+        "Within 90 days",
+        "Clear",
+        "Current",
+        "Older than 90 days at review"
+      ]
+    }
+  ]
+}

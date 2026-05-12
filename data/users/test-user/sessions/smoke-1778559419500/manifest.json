@@ -1,0 +1,95 @@
+{
+  "user_id": "test-user",
+  "session_id": "smoke-1778559419500",
+  "created_at": "2026-05-12T04:16:59.502Z",
+  "updated_at": "2026-05-12T04:17:01.203Z",
+  "files": [
+    {
+      "file_id": "2a1a3f1490f6d0f9dc1d9135",
+      "original_filename": "BPSS_case_tracker.xlsx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "kind": "excel",
+      "size_bytes": 9578,
+      "sha256": "2a1a3f1490f6d0f9dc1d9135c3b303d73bf7b2d528d5d62c6d7393a5f3ccad87",
+      "status": "ready",
+      "uploaded_at": "2026-05-12T04:16:59.509Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/test-user/sessions/smoke-1778559419500/uploads/2a1a3f1490f6d0f9dc1d9135/original.xlsx",
+      "derived_paths": {
+        "workbook": "extracted/excel/2a1a3f1490f6d0f9dc1d9135/workbook.json",
+        "sheets_dir": "extracted/excel/2a1a3f1490f6d0f9dc1d9135/sheets"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-12T04:16:59.564Z"
+    },
+    {
+      "file_id": "85f793376e8df3c2b2bb8749",
+      "original_filename": "CAND-102_candidate_pack.docx",
+      "mime_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "kind": "docx",
+      "size_bytes": 37050,
+      "sha256": "85f793376e8df3c2b2bb8749ceb5d68e749751d8b2c23d3879b51cce46f4b3f3",
+      "status": "ready",
+      "uploaded_at": "2026-05-12T04:16:59.590Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/test-user/sessions/smoke-1778559419500/uploads/85f793376e8df3c2b2bb8749/original.docx",
+      "derived_paths": {
+        "markdown": "extracted/docx/85f793376e8df3c2b2bb8749/document.md",
+        "structure": "extracted/docx/85f793376e8df3c2b2bb8749/structure.json",
+        "chunks": "extracted/docx/85f793376e8df3c2b2bb8749/chunks.jsonl",
+        "text_index": "indexes/text/85f793376e8df3c2b2bb8749.chunks.jsonl"
+      },
+      "warnings": [],
+      "extracted_at": "2026-05-12T04:16:59.841Z"
+    },
+    {
+      "file_id": "4a5b8552c7705e8a5d5550ab",
+      "original_filename": "BPSS_Screening_Policy_v3.pdf",
+      "mime_type": "application/pdf",
+      "kind": "pdf",
+      "size_bytes": 3654,
+      "sha256": "4a5b8552c7705e8a5d5550ab7130ab32533b043598ccf1afb88182c0eb930435",
+      "status": "partial",
+      "uploaded_at": "2026-05-12T04:16:59.850Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/test-user/sessions/smoke-1778559419500/uploads/4a5b8552c7705e8a5d5550ab/original.pdf",
+      "derived_paths": {
+        "markdown": "extracted/pdf/4a5b8552c7705e8a5d5550ab/document.md",
+        "document": "extracted/pdf/4a5b8552c7705e8a5d5550ab/document.json",
+        "pages_dir": "extracted/pdf/4a5b8552c7705e8a5d5550ab/pages",
+        "text_index": "indexes/text/4a5b8552c7705e8a5d5550ab.chunks.jsonl"
+      },
+      "warnings": [
+        "Page 1: Gemini vision markdown skipped because GEMINI_API_KEY is not configured."
+      ],
+      "extracted_at": "2026-05-12T04:17:01.189Z"
+    },
+    {
+      "file_id": "c4441db27856d860686f5664",
+      "original_filename": "unsupported.txt",
+      "mime_type": "application/octet-stream",
+      "kind": "unsupported",
+      "size_bytes": 22,
+      "sha256": "c4441db27856d860686f5664719e6d9cdc8713a5588b5c34ee98c16cf60a30ee",
+      "status": "unsupported",
+      "uploaded_at": "2026-05-12T04:17:01.202Z",
+      "parser": {
+        "name": "document-harness",
+        "version": "2026-05-11"
+      },
+      "upload_path": "/Users/nadigaddashivasai/Workspace/mastra-project/data/users/test-user/sessions/smoke-1778559419500/uploads/c4441db27856d860686f5664/original.txt",
+      "derived_paths": {},
+      "warnings": [],
+      "error": "Unsupported file type '.txt'."
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mastra Document Chat</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #0b0c0f;
+        --panel: #12141a;
+        --text: #e7e9ee;
+        --muted: #a2a8b6;
+        --border: #2a2f3a;
+        --accent: #6ea8fe;
+        --danger: #ff6b6b;
+      }
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg: #f7f8fb;
+          --panel: #ffffff;
+          --text: #0b0c0f;
+          --muted: #4b5565;
+          --border: #d9dde6;
+          --accent: #2563eb;
+          --danger: #b91c1c;
+        }
+      }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+          "Segoe UI Emoji";
+        background: var(--bg);
+        color: var(--text);
+      }
+      header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        background: var(--panel);
+        position: sticky;
+        top: 0;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+      main {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 18px 20px 28px;
+        display: grid;
+        gap: 16px;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      input,
+      textarea,
+      button {
+        width: 100%;
+        box-sizing: border-box;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        padding: 10px 12px;
+        font: inherit;
+      }
+      textarea {
+        min-height: 110px;
+        resize: vertical;
+      }
+      button {
+        cursor: pointer;
+        background: color-mix(in oklab, var(--accent) 14%, transparent);
+        border-color: color-mix(in oklab, var(--accent) 35%, var(--border));
+        font-weight: 600;
+      }
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .status {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .status.error {
+        color: var(--danger);
+      }
+      pre {
+        margin: 0;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: color-mix(in oklab, var(--panel) 70%, black);
+        overflow: auto;
+        line-height: 1.35;
+        font-size: 12.5px;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      a {
+        color: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Mastra Multi-Agent Document Chat</h1>
+    </header>
+    <main>
+      <div class="card">
+        <div class="row">
+          <div>
+            <label for="userId">User ID</label>
+            <input id="userId" value="local-user" />
+          </div>
+          <div>
+            <label for="sessionId">Session ID</label>
+            <input id="sessionId" value="bpss-demo" />
+          </div>
+        </div>
+        <div style="height: 12px"></div>
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Ask a question, or try: Which candidate files are not ready for BPSS closure?"></textarea>
+        <div style="height: 12px"></div>
+        <div class="toolbar">
+          <button id="send">Send</button>
+          <div id="status" class="status">Ready</div>
+        </div>
+        <div style="height: 10px"></div>
+        <div class="hint">
+          Tip: upload documents via the API using <code>/upload</code> (see <code>README.md</code>) or index the sample dataset with
+          <code>npm run index</code>.
+        </div>
+      </div>
+
+      <div class="card">
+        <label>Response</label>
+        <pre id="output">{}</pre>
+      </div>
+    </main>
+
+    <script>
+      const userIdEl = document.getElementById("userId");
+      const sessionIdEl = document.getElementById("sessionId");
+      const messageEl = document.getElementById("message");
+      const sendEl = document.getElementById("send");
+      const statusEl = document.getElementById("status");
+      const outputEl = document.getElementById("output");
+
+      function setStatus(text, isError = false) {
+        statusEl.textContent = text;
+        statusEl.classList.toggle("error", Boolean(isError));
+      }
+
+      async function send() {
+        const message = messageEl.value.trim();
+        if (!message) return;
+        sendEl.disabled = true;
+        setStatus("Sending...");
+        try {
+          const response = await fetch("/chat", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              userId: userIdEl.value.trim() || undefined,
+              sessionId: sessionIdEl.value.trim() || undefined,
+              message,
+            }),
+          });
+          const data = await response.json().catch(() => ({ error: "Invalid JSON response" }));
+          outputEl.textContent = JSON.stringify(data, null, 2);
+          setStatus(response.ok ? "OK" : `HTTP ${response.status}`, !response.ok);
+        } catch (err) {
+          setStatus(err instanceof Error ? err.message : String(err), true);
+        } finally {
+          sendEl.disabled = false;
+        }
+      }
+
+      sendEl.addEventListener("click", () => void send());
+      messageEl.addEventListener("keydown", (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") void send();
+      });
+    </script>
+  </body>
+</html>
+

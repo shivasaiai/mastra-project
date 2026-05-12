@@ -21,6 +21,25 @@ The Mastra registry is in `src/mastra/index.ts`. The active agent set is `coordi
 
 The HTTP backend in `src/server.ts` routes requests to the smallest useful agent. If `GEMINI_API_KEY` or `OPENAI_API_KEY` is not configured, `/chat` falls back to deterministic document retrieval so local demos still work.
 
+For the full V2 design narrative, see `v2.md`. For visual system-design diagrams, see `docs/V2_MERMAID_ARCHITECTURE.md`.
+
+## Agent Boundary
+
+The project uses a small agent layer:
+
+- `coordinatorAgent`: routes research, document, and hybrid questions.
+- `documentAnalystAgent`: reasons over uploaded document evidence.
+- `researchAgent`: performs external lookup and cited research synthesis.
+
+The following are deliberately not agents:
+
+- Upload initialization.
+- File type detection.
+- PDF/DOCX/PPTX/Excel/CSV extraction.
+- Text indexing and chunking.
+- Spreadsheet filtering, sorting, and summarization.
+- Citation and evidence packet construction.
+
 ## Async Ingestion
 
 Uploads are job-shaped:
@@ -35,7 +54,7 @@ POST /upload
 Document worker
   -> extracting
   -> indexing
-  -> ready | partial | failed
+  -> ready | partial | failed | unsupported
 ```
 
 For the assignment, the queue is in-process and bounded. The worker contract is isolated in `src/ingestion/`, so it can later move to BullMQ, SQS, Cloud Tasks, or another durable queue without changing the agent/tool layer.
@@ -66,6 +85,38 @@ data/
 - PDF: `unpdf` text fallback, per-page PNG rendering via `pdfjs-dist` + `@napi-rs/canvas`, and optional Gemini vision Markdown when `GEMINI_API_KEY` is configured.
 - PPTX: XML-based slide markdown, slide structure JSON, extracted media, and best-effort native chart XML summaries.
 - Text indexer: persisted chunk indexes for PDF, DOCX, and PPTX evidence retrieval.
+
+## Retrieval Strategy
+
+The system does not force every document through one generic RAG path:
+
+- PDF/DOCX/PPTX: text chunk retrieval with file/page/slide/block locators.
+- Excel/CSV: schema-aware structured querying instead of embedding raw rows.
+- PPTX: slide/object/chart tools for deck-specific questions.
+- Hybrid questions: combine spreadsheet rows, text chunks, slide/chart evidence, and web sources when needed.
+
+This is the core design trade-off: use the retrieval shape that matches the document type.
+
+## Evidence and Citations
+
+Retrieval tools return structured evidence, not loose text blobs. The common evidence contract is `EvidencePacket` in `src/types.ts`:
+
+```text
+EvidencePacket
+  -> source: userId, sessionId, fileId, originalFilename, documentType
+  -> locator: page, slide, sheetId, rowNumber, blockId, chartId
+  -> content: text, row, table, summary
+  -> extractionStatus
+  -> warnings
+```
+
+Final answers should cite file identity and location, for example:
+
+```text
+[candidate_tracker.xlsx | sheet=tracker | row=42]
+[policy.pdf | page=7 | block=page_007_0003]
+[deck.pptx | slide=12 | chart=chart_002]
+```
 
 ## Tool Surface
 
@@ -207,4 +258,3 @@ The project is designed to support multiple retrieval approaches:
 - Hybrid retrieval where the Coordinator combines markdown citations with exact spreadsheet rows.
 
 This is deliberate: Excel questions should not be answered by embedding raw sheets when schema-aware querying is more reliable.
-# mastra-project

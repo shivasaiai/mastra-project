@@ -1,0 +1,18 @@
+{
+  "file_id": "4a5b8552c7705e8a5d5550ab",
+  "page_count": 1,
+  "rendered_pages": 1,
+  "gemini_markdown_pages": 0,
+  "pages": [
+    {
+      "page_number": 1,
+      "markdown": "extracted/pdf/4a5b8552c7705e8a5d5550ab/pages/page_001.md",
+      "structure": "extracted/pdf/4a5b8552c7705e8a5d5550ab/pages/page_001.structure.json",
+      "image": "extracted/pdf/4a5b8552c7705e8a5d5550ab/pages/page_001.png",
+      "markdown_source": "unpdf_text"
+    }
+  ],
+  "warnings": [
+    "Page 1: Gemini vision markdown skipped because GEMINI_API_KEY is not configured."
+  ]
+}

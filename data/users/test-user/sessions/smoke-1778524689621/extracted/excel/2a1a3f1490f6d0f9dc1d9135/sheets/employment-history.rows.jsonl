@@ -1,0 +1,10 @@
+{"candidate_id":"CAND-101","period_start":"2023-01-01","period_end":"2024-06-30","evidence_type":"Referee","evidence_status":"Valid","notes":"Employer A"}
+{"candidate_id":"CAND-101","period_start":"2024-07-01","period_end":"2026-01-31","evidence_type":"Referee","evidence_status":"Valid","notes":"Employer B"}
+{"candidate_id":"CAND-102","period_start":"2023-01-01","period_end":"2024-03-31","evidence_type":"Referee","evidence_status":"Valid","notes":"Employer X"}
+{"candidate_id":"CAND-102","period_start":"2024-04-01","period_end":"2024-05-20","evidence_type":"Gap","evidence_status":"Unexplained","notes":"No evidence"}
+{"candidate_id":"CAND-102","period_start":"2024-05-21","period_end":"2026-01-31","evidence_type":"Payslips","evidence_status":"Valid","notes":"Employer Y"}
+{"candidate_id":"CAND-103","period_start":"2023-01-01","period_end":"2026-02-01","evidence_type":"Education Declaration","evidence_status":"Accepted","notes":"Full-time study and part-time work"}
+{"candidate_id":"CAND-104","period_start":"2023-01-01","period_end":"2024-07-31","evidence_type":"CV only","evidence_status":"Weak","notes":"No documentary corroboration"}
+{"candidate_id":"CAND-104","period_start":"2024-08-01","period_end":"2026-01-31","evidence_type":"Referee","evidence_status":"Valid","notes":"Employer Recent"}
+{"candidate_id":"CAND-105","period_start":"2024-06-01","period_end":"2026-02-20","evidence_type":"Referee","evidence_status":"Valid","notes":"Only recent period covered"}
+{"candidate_id":"CAND-106","period_start":"2023-01-01","period_end":"2026-01-15","evidence_type":"Contract pack","evidence_status":"Valid","notes":"Contracting history summary"}

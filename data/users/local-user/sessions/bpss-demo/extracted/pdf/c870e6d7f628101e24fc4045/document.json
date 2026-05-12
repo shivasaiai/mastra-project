@@ -1,0 +1,27 @@
+{
+  "file_id": "c870e6d7f628101e24fc4045",
+  "page_count": 1,
+  "processed_pages": 1,
+  "rendered_pages": 1,
+  "gemini_markdown_pages": 0,
+  "config": {
+    "render_scale": 2,
+    "max_pages": 250,
+    "page_concurrency": 2,
+    "gemini_model": "gemini-3-flash",
+    "gemini_timeout_ms": 60000,
+    "gemini_retries": 2
+  },
+  "pages": [
+    {
+      "page_number": 1,
+      "markdown": "extracted/pdf/c870e6d7f628101e24fc4045/pages/page_001.md",
+      "structure": "extracted/pdf/c870e6d7f628101e24fc4045/pages/page_001.structure.json",
+      "image": "extracted/pdf/c870e6d7f628101e24fc4045/pages/page_001.png",
+      "markdown_source": "unpdf_text"
+    }
+  ],
+  "warnings": [
+    "Page 1: Gemini vision markdown skipped because GEMINI_API_KEY is not configured."
+  ]
+}

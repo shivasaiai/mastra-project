@@ -1,0 +1,17 @@
+{
+  "file_id": "021a4fd2fea00010b08c3e2a",
+  "sheet_count": 1,
+  "sheets": [
+    {
+      "sheet_id": "sheet1",
+      "sheet_name": "Sheet1",
+      "hidden": false,
+      "dimensions": {
+        "first_row": 1,
+        "last_row": 11,
+        "first_col": 1,
+        "last_col": 6
+      }
+    }
+  ]
+}
