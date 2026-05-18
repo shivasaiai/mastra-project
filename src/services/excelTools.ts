@@ -6,6 +6,7 @@ import { loadOrCreateManifest, getFileOrThrow } from "../document-store/manifest
 import { sessionRoot } from "../document-store/paths.js";
 import { buildEvidencePacket } from "../retrieval/evidence.js";
 import { readJson } from "../utils/fs.js";
+import { normalizeWhitespace, safeSnippet } from "../utils/text.js";
 
 const DEFAULT_LIMIT = 50;
 const HARD_CELL_CAP = 5000;
@@ -124,6 +125,38 @@ export async function previewRows(input: {
   return { offset, limit, returned: selectedRows.length, rows: selectedRows };
 }
 
+export async function previewEvidenceRows(input: {
+  userId: string;
+  sessionId: string;
+  fileId: string;
+  sheetId: string;
+  limit?: number;
+  offset?: number;
+  columns?: string[];
+}) {
+  const manifest = await loadOrCreateManifest(input.userId, input.sessionId);
+  const file = getFileOrThrow(manifest, input.fileId);
+  const rows = await readNumberedRows(sheetPath(input.userId, input.sessionId, input.fileId, input.sheetId, "rows.jsonl"));
+  const offset = input.offset ?? 0;
+  const limit = Math.max(0, Math.min(input.limit ?? 20, DEFAULT_LIMIT));
+  const selected = rows.slice(offset, offset + limit);
+  return {
+    offset,
+    limit,
+    returned: selected.length,
+    evidence: selected.map((item) =>
+      buildEvidencePacket({
+        userId: input.userId,
+        sessionId: input.sessionId,
+        file,
+        evidenceId: `${input.fileId}:${input.sheetId}:row_${item.rowNumber}`,
+        locator: { sheetId: input.sheetId, rowNumber: item.rowNumber },
+        content: { row: selectColumns(item.row, input.columns) },
+      }),
+    ),
+  };
+}
+
 function selectColumns(row: Record<string, unknown>, columns?: string[]): Record<string, unknown> {
   if (!columns || columns.length === 0) return row;
   return Object.fromEntries(columns.map((column) => [column, row[column] ?? null]));
@@ -191,6 +224,23 @@ export async function describe(input: { userId: string; sessionId: string; fileI
     };
   });
   return { rowCount: rows.length, stats };
+}
+
+export async function describeEvidence(input: { userId: string; sessionId: string; fileId: string; sheetId: string; columns?: string[] }) {
+  const manifest = await loadOrCreateManifest(input.userId, input.sessionId);
+  const file = getFileOrThrow(manifest, input.fileId);
+  const described = await describe(input);
+  const summary = safeSnippet(normalizeWhitespace(JSON.stringify(described)), 900);
+  return [
+    buildEvidencePacket({
+      userId: input.userId,
+      sessionId: input.sessionId,
+      file,
+      evidenceId: `${input.fileId}:${input.sheetId}:describe`,
+      locator: { sheetId: input.sheetId, blockId: "describe" },
+      content: { summary },
+    }),
+  ];
 }
 
 export async function getPreviewMarkdown(input: { userId: string; sessionId: string; fileId: string; sheetId: string }) {

@@ -4,14 +4,18 @@ import {
   documentsGetManifestTool,
   documentsGetStatusTool,
   documentsListTool,
-  documentsSearchTextTool,
+  documentsRetrieveEvidenceTool,
   excelDescribeTool,
+  excelDescribeEvidenceTool,
   excelGetSchemaTool,
   excelListSheetsTool,
+  excelPreviewEvidenceTool,
   excelPreviewRowsTool,
   excelQueryRowsTool,
   pptxGetChartDataTool,
+  pptxGetChartEvidenceTool,
   pptxGetSlideMarkdownTool,
+  pptxGetSlideEvidenceTool,
   pptxGetSlideStructureTool,
   pptxListSlidesTool,
 } from "../mastra/tools/documentTools.js";
@@ -24,11 +28,18 @@ export const documentAnalystAgent = new Agent({
   instructions: `
 You answer questions using uploaded session documents.
 
+Tool policy (mandatory):
+- All tools return either { ok: true, result: ... } or { ok: false, what_failed, what_it_tried, next_best_tool, error }.
+- If a tool returns ok:false, stop and respond with a JSON object:
+  { "what_failed": "...", "what_it_tried": "...", "next_best_tool": "...", "error": "..." }
+- Prefer EvidencePacket-backed tools for factual claims. Do not make factual assertions without evidence.
+
 Use deterministic tools before reasoning:
 - List documents or inspect status before assuming a file exists or is ready.
-- Use documents.searchText for PDF, DOCX, and PPTX narrative evidence.
+- Use documents.retrieveEvidence for PDF/DOCX/PPTX narrative evidence; treat lowEvidence as a guardrail (ask for a narrower query or a specific file).
 - Use excel schema, preview, queryRows, and describe tools for Excel or CSV facts.
-- Use PPTX slide and chart tools when the question refers to slides, decks, or charts.
+- Prefer excel.previewEvidence and excel.describeEvidence for citation-safe grounding.
+- Prefer pptx.getSlideEvidence and pptx.getChartEvidence for citation-safe grounding.
 
 Ground every substantive claim in tool evidence. Cite fileId plus page, slide, sheet, row, block, or chart locators when available.
 Call out partial, failed, unsupported, or missing evidence directly. Do not invent content that was not extracted.
@@ -39,16 +50,20 @@ Call out partial, failed, unsupported, or missing evidence directly. Do not inve
     documentsListTool,
     documentsGetManifestTool,
     documentsGetStatusTool,
-    documentsSearchTextTool,
+    documentsRetrieveEvidenceTool,
     documentsGetMarkdownTool,
     excelListSheetsTool,
     excelGetSchemaTool,
     excelPreviewRowsTool,
+    excelPreviewEvidenceTool,
     excelQueryRowsTool,
     excelDescribeTool,
+    excelDescribeEvidenceTool,
     pptxListSlidesTool,
     pptxGetSlideMarkdownTool,
+    pptxGetSlideEvidenceTool,
     pptxGetSlideStructureTool,
     pptxGetChartDataTool,
+    pptxGetChartEvidenceTool,
   },
 });

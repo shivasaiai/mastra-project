@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { URL } from "node:url";
 import { DEFAULT_SESSION_ID, DEFAULT_USER_ID } from "./config.js";
 import { routeIntent } from "./agents/coordinator.js";
+import { routeIntentEvidenceAware } from "./agents/router.js";
 import { initializeUpload } from "./document-store/intake.js";
 import { agentKeys, mastra } from "./mastra/index.js";
 import { listDocuments, listSheets } from "./services/excelTools.js";
@@ -51,6 +52,7 @@ function selectedAgentForRoute(route: ReturnType<typeof routeIntent>["route"]) {
     case "research":
       return "researchAgent";
     case "hybrid":
+    case "clarify":
       return "coordinatorAgent";
     default:
       return "documentAnalystAgent";
@@ -62,8 +64,8 @@ function hasLlmProvider(): boolean {
 }
 
 async function deterministicFallback(userId: string, sessionId: string, message: string) {
-  const route = routeIntent(message);
-  if (route.route === "manifest" || route.route === "intake") {
+  const route = await routeIntentEvidenceAware({ userId, sessionId, message });
+  if (route.route === "manifest" || route.route === "intake" || route.route === "clarify") {
     return { route, output: await listDocuments({ userId, sessionId }) };
   }
 
@@ -90,7 +92,7 @@ async function deterministicFallback(userId: string, sessionId: string, message:
 async function handleChat(body: ChatRequest) {
   const userId = body.userId ?? DEFAULT_USER_ID;
   const sessionId = body.sessionId ?? DEFAULT_SESSION_ID;
-  const route = routeIntent(body.message);
+  const route = await routeIntentEvidenceAware({ userId, sessionId, message: body.message });
   const selectedAgent = selectedAgentForRoute(route.route);
 
   if (!hasLlmProvider()) {

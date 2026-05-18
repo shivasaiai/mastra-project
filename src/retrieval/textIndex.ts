@@ -6,6 +6,7 @@ import { EvidencePacket, UploadedDocument } from "../types.js";
 import { ensureDir, fileExists, readJson, writeText } from "../utils/fs.js";
 import { normalizeWhitespace, safeSnippet } from "../utils/text.js";
 import { buildEvidencePacket } from "./evidence.js";
+import { chunkMarkdownByHeadings } from "./chunking.js";
 
 type TextIndexRecord = {
   chunkId: string;
@@ -59,6 +60,90 @@ function scoreText(text: string, terms: string[]): number {
   return terms.reduce((sum, term) => sum + (lower.includes(term) ? 1 : 0), 0);
 }
 
+function tokenize(text: string): string[] {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .filter((token) => token.length > 1);
+}
+
+function bm25Scores(records: TextIndexRecord[], query: string): Map<string, number> {
+  const queryTokens = tokenize(query);
+  const scoreByChunk = new Map<string, number>();
+  if (queryTokens.length === 0 || records.length === 0) return scoreByChunk;
+
+  const N = records.length;
+  const docFreq = new Map<string, number>();
+  const docLens: number[] = [];
+  const tokenCache = new Map<string, string[]>();
+
+  for (const record of records) {
+    const tokens = tokenize(record.searchText);
+    tokenCache.set(record.chunkId, tokens);
+    docLens.push(tokens.length || 1);
+    const seen = new Set(tokens);
+    for (const token of seen) docFreq.set(token, (docFreq.get(token) ?? 0) + 1);
+  }
+
+  const avgLen = docLens.reduce((sum, value) => sum + value, 0) / Math.max(docLens.length, 1);
+  const k1 = 1.2;
+  const b = 0.75;
+
+  for (const record of records) {
+    const tokens = tokenCache.get(record.chunkId) ?? [];
+    const len = tokens.length || 1;
+    const tf = new Map<string, number>();
+    for (const token of tokens) tf.set(token, (tf.get(token) ?? 0) + 1);
+
+    let score = 0;
+    for (const token of queryTokens) {
+      const df = docFreq.get(token) ?? 0;
+      if (df === 0) continue;
+      const idf = Math.log(1 + (N - df + 0.5) / (df + 0.5));
+      const freq = tf.get(token) ?? 0;
+      if (freq === 0) continue;
+      const denom = freq + k1 * (1 - b + (b * len) / Math.max(avgLen, 1));
+      score += idf * ((freq * (k1 + 1)) / denom);
+    }
+
+    // Phrase/substring boost for exact matches.
+    const lowerQuery = query.toLowerCase().trim();
+    if (lowerQuery.length >= 4 && record.searchText.includes(lowerQuery)) score += 1.75;
+
+    if (score > 0) scoreByChunk.set(record.chunkId, score);
+  }
+
+  return scoreByChunk;
+}
+
+function diversify(matches: EvidencePacket[], limit: number): EvidencePacket[] {
+  const perGroupLimit = 3;
+  const groupCounts = new Map<string, number>();
+  const chosen: EvidencePacket[] = [];
+
+  for (const packet of matches) {
+    if (chosen.length >= limit) break;
+    const group =
+      packet.locator.page !== undefined
+        ? `${packet.source.fileId}:page:${packet.locator.page}`
+        : packet.locator.slide !== undefined
+          ? `${packet.source.fileId}:slide:${packet.locator.slide}`
+          : packet.locator.sheetId
+            ? `${packet.source.fileId}:sheet:${packet.locator.sheetId}`
+            : packet.locator.blockId
+              ? `${packet.source.fileId}:block:${String(packet.locator.blockId).split("_").slice(0, 2).join("_")}`
+              : `${packet.source.fileId}:misc`;
+
+    const count = groupCounts.get(group) ?? 0;
+    if (count >= perGroupLimit) continue;
+    groupCounts.set(group, count + 1);
+    chosen.push(packet);
+  }
+  return chosen;
+}
+
 async function recordsFromMarkdownFile(input: {
   userId: string;
   sessionId: string;
@@ -68,7 +153,9 @@ async function recordsFromMarkdownFile(input: {
   chunkPrefix: string;
 }): Promise<TextIndexRecord[]> {
   const markdown = await fs.readFile(resolveSessionPath(input.userId, input.sessionId, input.relativePath), "utf8");
-  return splitMarkdownBlocks(markdown).map((text, index) => ({
+  const chunks = chunkMarkdownByHeadings(markdown);
+  const fallback = chunks.length ? chunks.map((chunk) => chunk.text) : splitMarkdownBlocks(markdown);
+  return fallback.map((text, index) => ({
     chunkId: `${input.chunkPrefix}_${String(index + 1).padStart(4, "0")}`,
     fileId: input.file.file_id,
     originalFilename: input.file.original_filename,
@@ -170,7 +257,6 @@ export async function searchTextEvidence(input: {
 }): Promise<EvidencePacket[]> {
   const manifest = await loadOrCreateManifest(input.userId, input.sessionId);
   const files = input.fileId ? [getFileOrThrow(manifest, input.fileId)] : manifest.files;
-  const terms = input.query.toLowerCase().split(/\s+/).filter(Boolean);
   const matches: EvidencePacket[] = [];
 
   for (const file of files) {
@@ -182,8 +268,9 @@ export async function searchTextEvidence(input: {
       indexPath = resolveSessionPath(input.userId, input.sessionId, indexResult.path);
     }
     const records = await readTextIndex(indexPath);
+    const scoreMap = bm25Scores(records, input.query);
     for (const record of records) {
-      const score = scoreText(record.searchText, terms);
+      const score = scoreMap.get(record.chunkId) ?? 0;
       if (score <= 0) continue;
       matches.push(
         buildEvidencePacket({
@@ -202,5 +289,6 @@ export async function searchTextEvidence(input: {
     }
   }
 
-  return matches.sort((left, right) => (right.score ?? 0) - (left.score ?? 0)).slice(0, input.limit ?? DEFAULT_LIMIT);
+  const sorted = matches.sort((left, right) => (right.score ?? 0) - (left.score ?? 0));
+  return diversify(sorted, input.limit ?? DEFAULT_LIMIT);
 }

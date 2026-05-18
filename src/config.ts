@@ -14,6 +14,8 @@ export const DEFAULT_GEMINI_VISION_MODEL = "gemini-3.1-pro-preview";
 
 const GEMINI_MODEL_ALIASES = new Map<string, string>([
   ["gemini-3-flash", "gemini-3-flash-preview"],
+  ["gemini-1.5-flash", "gemini-1.5-flash"],
+  ["gemini-flash", "gemini-1.5-flash"],
   ["gemini-pro", DEFAULT_GEMINI_CHAT_MODEL],
 ]);
 

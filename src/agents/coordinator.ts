@@ -21,6 +21,10 @@ Responsibilities:
 - Use research.searchWeb before answering external or current-information questions.
 - State missing evidence explicitly and distinguish ready, partial, failed, and unsupported files.
 - Cite sources and uploaded-file locators whenever available.
+
+Tool policy:
+- Tools return { ok: true, result: ... } or { ok: false, what_failed, what_it_tried, next_best_tool, error }.
+- When the user says "this document/file" and multiple uploads exist, ask a single clarifying question and include a short file list (fileId + originalFilename + status).
 `.trim();
 
 export const coordinatorAgent = new Agent({
@@ -38,7 +42,7 @@ export const coordinatorAgent = new Agent({
 });
 
 export function routeIntent(message: string): {
-  route: "intake" | "excel" | "pptx" | "document_search" | "manifest" | "research" | "hybrid";
+  route: "intake" | "excel" | "pptx" | "document_search" | "manifest" | "research" | "hybrid" | "clarify";
   rationale: string;
 } {
   const lower = message.toLowerCase();
@@ -46,6 +50,9 @@ export function routeIntent(message: string): {
   const asksForDocuments = /(document|file|upload|pdf|docx|word|spreadsheet|excel|xlsx|csv|sheet|ppt|pptx|powerpoint|slide|deck|evidence|session)/.test(lower);
   if (asksForResearch && asksForDocuments) {
     return { route: "hybrid", rationale: "The request needs both external research and uploaded-session evidence." };
+  }
+  if (/(^|\b)(analyze this|summarize this|explain this|what does this say|what is this about|in this document|in this file)(\b|$)/.test(lower)) {
+    return { route: "clarify", rationale: "The request refers to 'this' without specifying which uploaded file to use." };
   }
   if (/(upload|initialize|ingest|add file|index)/.test(lower)) {
     return { route: "intake", rationale: "The request is about adding documents to a session." };

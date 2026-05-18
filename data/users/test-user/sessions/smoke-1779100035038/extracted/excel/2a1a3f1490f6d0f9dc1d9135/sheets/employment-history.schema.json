@@ -1,0 +1,87 @@
+{
+  "sheet_id": "employment-history",
+  "sheet_name": "employment_history",
+  "row_count": 10,
+  "column_count": 6,
+  "header_row_index": 1,
+  "table_confidence": "high",
+  "columns": [
+    {
+      "name": "candidate_id",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 10,
+      "sample_values": [
+        "CAND-101",
+        "CAND-102",
+        "CAND-103",
+        "CAND-104",
+        "CAND-105"
+      ]
+    },
+    {
+      "name": "period_start",
+      "inferred_type": "date",
+      "null_count": 0,
+      "non_null_count": 10,
+      "sample_values": [
+        "2023-01-01",
+        "2024-07-01",
+        "2024-04-01",
+        "2024-05-21",
+        "2024-08-01"
+      ]
+    },
+    {
+      "name": "period_end",
+      "inferred_type": "date",
+      "null_count": 0,
+      "non_null_count": 10,
+      "sample_values": [
+        "2024-06-30",
+        "2026-01-31",
+        "2024-03-31",
+        "2024-05-20",
+        "2026-02-01"
+      ]
+    },
+    {
+      "name": "evidence_type",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 10,
+      "sample_values": [
+        "Referee",
+        "Gap",
+        "Payslips",
+        "Education Declaration",
+        "CV only"
+      ]
+    },
+    {
+      "name": "evidence_status",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 10,
+      "sample_values": [
+        "Valid",
+        "Unexplained",
+        "Accepted",
+        "Weak"
+      ]
+    },
+    {
+      "name": "notes",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 10,
+      "sample_values": [
+        "Employer A",
+        "Employer B",
+        "Employer X",
+        "No evidence",
+        "Employer Y"
+      ]
+    }
+  ]
+}

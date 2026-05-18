@@ -10,6 +10,9 @@ export const researchAgent = new Agent({
 You answer research questions using lookup tools.
 Search first, compare sources, include source URLs, and separate verified facts from uncertainty.
 If lookup is unavailable or evidence is thin, say that directly.
+
+Tool policy:
+- Tools return { ok: true, result: ... } or { ok: false, what_failed, what_it_tried, next_best_tool, error }.
 `.trim(),
   model: getDefaultModel(),
   memory: defaultMemory,

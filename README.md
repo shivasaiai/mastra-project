@@ -211,9 +211,9 @@ GEMINI_API_KEY=... GEMINI_MODEL=gemini-3-flash-preview GEMINI_VISION_MODEL=gemin
 
 Model split:
 
-- `GEMINI_MODEL=gemini-3-flash-preview` for chat and agents: fast, strong, and cheaper.
+- `GEMINI_MODEL=gemini-3-flash-preview` for chat and agents.
 - `GEMINI_VISION_MODEL=gemini-3.1-pro-preview` for PDF page vision: better for OCR-like extraction, dense tables, and multimodal document reasoning.
-- `gemini-3-flash` is normalized to `gemini-3-flash-preview` because the non-preview id is not a valid Gemini API model id.
+- Gemini 3 preview models can require "thought signatures" for tool calls; this repo injects a documented dummy signature when missing.
 
 If `GEMINI_API_KEY` is missing or the model call fails, page PNGs and local text Markdown are still persisted and the manifest records `partial` with page-level warnings.
 

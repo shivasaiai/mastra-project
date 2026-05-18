@@ -2,6 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { loadOrCreateManifest, getFileOrThrow } from "../document-store/manifest.js";
 import { sessionRoot } from "../document-store/paths.js";
+import { buildEvidencePacket } from "../retrieval/evidence.js";
 import { searchTextEvidence } from "../retrieval/textIndex.js";
 import { normalizeWhitespace, safeSnippet } from "../utils/text.js";
 
@@ -88,6 +89,24 @@ export async function searchDocuments(input: { userId: string; sessionId: string
   return searchTextEvidence(input);
 }
 
+export async function retrieveEvidence(input: { userId: string; sessionId: string; fileId?: string; query: string; limit?: number }) {
+  const evidence = await searchTextEvidence(input);
+  const lowEvidence = evidence.length < 2;
+  return {
+    query: input.query,
+    returned: evidence.length,
+    lowEvidence,
+    hint: lowEvidence
+      ? "Low evidence: broaden the query, specify a fileId/filename, or confirm the document finished extraction."
+      : undefined,
+    evidence,
+  };
+}
+
+export async function retrieveEvidencePackets(input: { userId: string; sessionId: string; fileId?: string; query: string; limit?: number }) {
+  return searchTextEvidence(input);
+}
+
 export async function listPptxSlides(input: { userId: string; sessionId: string; fileId: string }) {
   const manifest = await loadOrCreateManifest(input.userId, input.sessionId);
   const file = getFileOrThrow(manifest, input.fileId);
@@ -103,6 +122,22 @@ export async function getPptxSlideMarkdown(input: { userId: string; sessionId: s
   return fs.readFile(filePath, "utf8");
 }
 
+export async function getPptxSlideEvidence(input: { userId: string; sessionId: string; fileId: string; slideNumber: number }) {
+  const manifest = await loadOrCreateManifest(input.userId, input.sessionId);
+  const file = getFileOrThrow(manifest, input.fileId);
+  const markdown = await getPptxSlideMarkdown(input);
+  return [
+    buildEvidencePacket({
+      userId: input.userId,
+      sessionId: input.sessionId,
+      file,
+      evidenceId: `${input.fileId}:slide_${String(input.slideNumber).padStart(3, "0")}`,
+      locator: { slide: input.slideNumber, blockId: `slide_${String(input.slideNumber).padStart(3, "0")}` },
+      content: { text: safeSnippet(normalizeWhitespace(markdown), 900) },
+    }),
+  ];
+}
+
 export async function getPptxSlideStructure(input: { userId: string; sessionId: string; fileId: string; slideNumber: number }) {
   const slideId = `slide_${String(input.slideNumber).padStart(3, "0")}`;
   const filePath = path.join(sessionRoot(input.userId, input.sessionId), "extracted", "pptx", input.fileId, "slides", `${slideId}.structure.json`);
@@ -114,4 +149,21 @@ export async function getChartData(input: { userId: string; sessionId: string; f
   const filePath = path.join(sessionRoot(input.userId, input.sessionId), "extracted", "pptx", input.fileId, "charts", `${input.chartId}.json`);
   const raw = await fs.readFile(filePath, "utf8");
   return JSON.parse(raw) as Record<string, unknown>;
+}
+
+export async function getChartEvidence(input: { userId: string; sessionId: string; fileId: string; chartId: string }) {
+  const manifest = await loadOrCreateManifest(input.userId, input.sessionId);
+  const file = getFileOrThrow(manifest, input.fileId);
+  const data = await getChartData(input);
+  const summary = safeSnippet(normalizeWhitespace(JSON.stringify(data)), 900);
+  return [
+    buildEvidencePacket({
+      userId: input.userId,
+      sessionId: input.sessionId,
+      file,
+      evidenceId: `${input.fileId}:chart:${input.chartId}`,
+      locator: { chartId: input.chartId, blockId: `chart_${input.chartId}` },
+      content: { summary },
+    }),
+  ];
 }
