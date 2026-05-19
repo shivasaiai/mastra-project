@@ -27,7 +27,7 @@ pnpm-debug.log*
 ## Local env (never commit secrets)
 .env
 .env.*
-!.env.example
+.env.example
 
 ## Tool caches
 .eslintcache
@@ -41,3 +41,16 @@ pnpm-debug.log*
 .DS_Store
 .idea/
 .vscode/
+
+## Local runtime data
+data/document-vectors.db
+data/document-vectors.db-shm
+data/document-vectors.db-wal
+data/mastra-observability.duckdb
+data/mastra-observability.duckdb.wal
+src/mastra/public/data/document-vectors.db
+src/mastra/public/data/document-vectors.db-shm
+src/mastra/public/data/document-vectors.db-wal
+src/mastra/public/data/mastra-observability.duckdb
+src/mastra/public/data/mastra-observability.duckdb.wal
+data/users/test-user/sessions/smoke-*/

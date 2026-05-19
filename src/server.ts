@@ -6,6 +6,8 @@ import { routeIntent } from "./agents/coordinator.js";
 import { routeIntentEvidenceAware } from "./agents/router.js";
 import { initializeUpload } from "./document-store/intake.js";
 import { agentKeys, mastra } from "./mastra/index.js";
+import { initializeVectorIndex } from "./mastra/vectorStore.js";
+import { getCachedChatResponse, storeCachedChatResponse } from "./services/chatResponseCache.js";
 import { listDocuments, listSheets } from "./services/excelTools.js";
 import { getDocumentStatus, searchMarkdown } from "./services/documentTools.js";
 
@@ -47,16 +49,8 @@ async function readJson<T>(request: http.IncomingMessage): Promise<T> {
   return JSON.parse(Buffer.concat(chunks).toString("utf8")) as T;
 }
 
-function selectedAgentForRoute(route: ReturnType<typeof routeIntent>["route"]) {
-  switch (route) {
-    case "research":
-      return "researchAgent";
-    case "hybrid":
-    case "clarify":
-      return "coordinatorAgent";
-    default:
-      return "documentAnalystAgent";
-  }
+function selectedAgentForRoute(_route: ReturnType<typeof routeIntent>["route"]) {
+  return "coordinatorAgent";
 }
 
 function hasLlmProvider(): boolean {
@@ -92,15 +86,27 @@ async function deterministicFallback(userId: string, sessionId: string, message:
 async function handleChat(body: ChatRequest) {
   const userId = body.userId ?? DEFAULT_USER_ID;
   const sessionId = body.sessionId ?? DEFAULT_SESSION_ID;
-  const route = await routeIntentEvidenceAware({ userId, sessionId, message: body.message });
+  const route = routeIntent(body.message);
   const selectedAgent = selectedAgentForRoute(route.route);
+  const llmConfigured = hasLlmProvider();
+  const cacheInput = {
+    userId,
+    sessionId,
+    message: body.message,
+    route: route.route,
+    selectedAgent,
+    llmConfigured,
+  };
+  const cached = await getCachedChatResponse(cacheInput);
+  if (cached.hit) return cached.response;
 
-  if (!hasLlmProvider()) {
-    return {
+  if (!llmConfigured) {
+    const response = {
       mode: "deterministic-fallback",
       selectedAgent,
       ...(await deterministicFallback(userId, sessionId, body.message)),
     };
+    return storeCachedChatResponse(cacheInput, response, cached);
   }
 
   const agent = mastra.getAgent(selectedAgent as (typeof agentKeys)[number]);
@@ -110,7 +116,7 @@ async function handleChat(body: ChatRequest) {
     "Use tools with this session context when document evidence is needed.",
     body.message,
   ].join("\n\n");
-  const result = await agent.generate(
+  const result = await agent.generateLegacy(
     [{ role: "user", content: prompt }],
     {
       memory: {
@@ -120,12 +126,13 @@ async function handleChat(body: ChatRequest) {
     },
   );
 
-  return {
+  const response = {
     mode: "mastra-agent",
     selectedAgent,
     route,
     text: result.text,
   };
+  return storeCachedChatResponse(cacheInput, response, cached);
 }
 
 const server = http.createServer(async (request, response) => {
@@ -202,6 +209,12 @@ server.on("error", (error) => {
   console.error("Server error:", error);
   process.exitCode = 1;
 });
-server.listen(port, "127.0.0.1", () => {
-  console.log(`Mastra multi-agent chatbot API listening on http://localhost:${port}`);
-});
+try {
+  await initializeVectorIndex();
+  server.listen(port, "127.0.0.1", () => {
+    console.log(`Mastra multi-agent chatbot API listening on http://localhost:${port}`);
+  });
+} catch (error) {
+  console.error("Failed to initialize server:", error);
+  process.exitCode = 1;
+}

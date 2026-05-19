@@ -1,0 +1,14 @@
+{
+  "page_number": 1,
+  "text_length": 164,
+  "image_path": "extracted/pdf/ed1a2579b867116dab28a3c0/pages/page_001.png",
+  "render": {
+    "byteLength": 39557
+  },
+  "markdown_source": "unpdf_text",
+  "gemini_model": null,
+  "gemini_attempts": 0,
+  "warnings": [
+    "Gemini vision markdown skipped because GEMINI_API_KEY is not configured."
+  ]
+}

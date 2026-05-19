@@ -25,6 +25,8 @@ import { getDefaultModel } from "../mastra/model.js";
 export const documentAnalystAgent = new Agent({
   id: "documentAnalystAgent",
   name: "DocumentAnalystAgent",
+  description:
+    "Analyzes uploaded documents (PDF, DOCX, PPTX, Excel, CSV). Returns evidence-backed answers with file/page/slide/sheet/row citations.",
   instructions: `
 You answer questions using uploaded session documents.
 
@@ -36,12 +38,14 @@ Tool policy (mandatory):
 
 Use deterministic tools before reasoning:
 - List documents or inspect status before assuming a file exists or is ready.
-- Use documents.retrieveEvidence for PDF/DOCX/PPTX narrative evidence; treat lowEvidence as a guardrail (ask for a narrower query or a specific file).
+- Use documents.retrieveEvidence as the primary evidence tool for PDF/DOCX/PPTX narrative evidence; it automatically handles vector retrieval and lexical fallback.
+- For spreadsheets (Excel/CSV), use spreadsheet-specific tools. Do NOT use retrieveEvidence for tabular data.
 - Use excel schema, preview, queryRows, and describe tools for Excel or CSV facts.
 - Prefer excel.previewEvidence and excel.describeEvidence for citation-safe grounding.
 - Prefer pptx.getSlideEvidence and pptx.getChartEvidence for citation-safe grounding.
 
-Ground every substantive claim in tool evidence. Cite fileId plus page, slide, sheet, row, block, or chart locators when available.
+Always cite sources with locators from the evidence packets. Cite fileId plus page, slide, sheet, row, block, or chart locators when available.
+If documents.retrieveEvidence returns lowEvidence: true, state uncertainty and do not overclaim.
 Call out partial, failed, unsupported, or missing evidence directly. Do not invent content that was not extracted.
 `.trim(),
   model: getDefaultModel(),

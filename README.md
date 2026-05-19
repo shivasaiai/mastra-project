@@ -1,260 +1,129 @@
-# Mastra Multi-Agent Document Chatbot
+# Mastra Multi-Agent RAG Chatbot
 
-Backend-first Mastra multi-agent chatbot for research and session-scoped document analysis. The document harness keeps every upload under a `user_id + session_id`, gives every file a stable content-derived `file_id`, preserves immutable originals, and exposes extracted artifacts through bounded Mastra tools instead of raw file reads.
+General-purpose Mastra chatbot for web research and session-scoped document analysis. It can ingest PDFs, Word docs, PowerPoints, Excel workbooks, and CSVs, then answer questions with evidence packets and file/page/slide/sheet/row citations.
+
+## What It Shows
+
+- Mastra-native multi-agent architecture with a coordinator, document analyst, and research agent.
+- Hybrid RAG: vector retrieval for narrative documents, lexical fallback when embeddings are unavailable, and structured tools for spreadsheets.
+- Async document ingestion with immutable uploads, extracted artifacts, retrieval indexes, and a manifest per `userId/sessionId`.
+- Mastra workflows for document ingestion and question answering.
+- Mastra scorers for citation coverage and groundedness.
+- Mastra observability in Studio: traces, logs, auto-extracted metrics, and scorer events.
+
+## 5-Minute Demo
+
+```bash
+npm install
+cp .env.example .env
+```
+
+Add one model API key to `.env`:
+
+```bash
+GEMINI_API_KEY=...
+# or
+OPENAI_API_KEY=...
+```
+
+Seed the default session with small generic sample files:
+
+```bash
+npm run seed
+```
+
+Start Mastra Studio:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:4111](http://localhost:4111), select the coordinator or document analyst agent, and ask:
+
+```text
+Summarize the uploaded documents with citations.
+Which sample records need follow-up?
+What does the deck say about the demo workflow?
+```
+
+In Studio, the `ingestDocumentWorkflow` and `answerQuestionWorkflow` are available from the Workflows tab. Running `answerQuestionWorkflow` also exercises the citation and groundedness scorers.
+
+To show observability in Studio, ask an agent a question or run `answerQuestionWorkflow`, then open the Observability section. The trace list shows agent, workflow, model, and tool spans. The Metrics view is populated from auto-extracted duration/token metrics, and score events appear after a scorer-backed workflow or run emits scorer results.
 
 ## Architecture
 
 ```text
 User
-  -> HTTP API
-      -> /upload queues extraction jobs
-      -> /chat routes to a lean Mastra agent layer
-          -> Coordinator Agent for hybrid coordination
-          -> Document Analyst Agent for uploaded-file reasoning
-          -> Research Agent for external lookup
-      -> deterministic tools for extraction, indexing, retrieval, and citations
+  -> Mastra Studio or HTTP API
+      -> Coordinator Agent
+          -> Document Analyst Agent
+              -> RAG, spreadsheet, and presentation tools
+          -> Research Agent
+              -> web research tool
+      -> workflows and scorers for repeatable demos
 ```
 
-The project intentionally keeps deterministic work out of agents. Upload bookkeeping, extraction, indexing, spreadsheet querying, and citation shaping are implemented as services and Mastra tools. Agents are used only for intent handling, source selection, cross-document reasoning, research synthesis, and final answer generation.
+The deterministic services own file storage, extraction, indexing, spreadsheet querying, and evidence packet construction. Agents focus on routing, source selection, reasoning, and final answer generation.
 
-The Mastra registry is in `src/mastra/index.ts`. The active agent set is `coordinatorAgent`, `documentAnalystAgent`, and `researchAgent`.
-
-The HTTP backend in `src/server.ts` routes requests to the smallest useful agent. If `GEMINI_API_KEY` or `OPENAI_API_KEY` is not configured, `/chat` falls back to deterministic document retrieval so local demos still work.
-
-For the full V2 design narrative, see `v2.md`. For visual system-design diagrams, see `docs/V2_MERMAID_ARCHITECTURE.md`.
-
-## Agent Boundary
-
-The project uses a small agent layer:
-
-- `coordinatorAgent`: routes research, document, and hybrid questions.
-- `documentAnalystAgent`: reasons over uploaded document evidence.
-- `researchAgent`: performs external lookup and cited research synthesis.
-
-The following are deliberately not agents:
-
-- Upload initialization.
-- File type detection.
-- PDF/DOCX/PPTX/Excel/CSV extraction.
-- Text indexing and chunking.
-- Spreadsheet filtering, sorting, and summarization.
-- Citation and evidence packet construction.
-
-## Async Ingestion
-
-Uploads are job-shaped:
+## Ingestion Flow
 
 ```text
-POST /upload
+upload
   -> store immutable original
-  -> create queued manifest record
-  -> enqueue ExtractDocumentJob
-  -> return 202 with fileId/jobId
-
-Document worker
-  -> extracting
-  -> indexing
-  -> ready | partial | failed | unsupported
+  -> create or update manifest record
+  -> extract PDF/DOCX/PPTX/Excel/CSV artifacts
+  -> build text index and optional vector index
+  -> mark ready, partial, failed, or unsupported
 ```
 
-For the assignment, the queue is in-process and bounded. The worker contract is isolated in `src/ingestion/`, so it can later move to BullMQ, SQS, Cloud Tasks, or another durable queue without changing the agent/tool layer.
-
-## Document Store
+Session data is stored under:
 
 ```text
-data/
-  users/<user_id>/sessions/<session_id>/
-    uploads/<file_id>/original.ext
-    extracted/
-      excel/<file_id>/
-      docx/<file_id>/
-      pdf/<file_id>/
-      pptx/<file_id>/
-    indexes/
-      text/<file_id>.chunks.jsonl
-    workspace/
-    manifest.json
+data/users/<user_id>/sessions/<session_id>/
+  uploads/<file_id>/original.ext
+  extracted/
+  indexes/
+  manifest.json
 ```
-
-`manifest.json` is the source of truth for file metadata, status, hashes, parser version, derived artifact paths, warnings, and extraction errors.
-
-## Implemented Extractors
-
-- Excel and CSV: workbook metadata, sheet schemas, previews, and JSONL row stores.
-- DOCX: markdown, simple structure metadata, and markdown chunks.
-- PDF: `unpdf` text fallback, per-page PNG rendering via `pdfjs-dist` + `@napi-rs/canvas`, and optional Gemini vision Markdown when `GEMINI_API_KEY` is configured.
-- PPTX: XML-based slide markdown, slide structure JSON, extracted media, and best-effort native chart XML summaries.
-- Text indexer: persisted chunk indexes for PDF, DOCX, and PPTX evidence retrieval.
 
 ## Retrieval Strategy
 
-The system does not force every document through one generic RAG path:
+- PDF/DOCX/PPTX: narrative chunks with page, slide, and block locators.
+- Excel/CSV: schema-aware row tools for exact filtering and row-level citations.
+- Hybrid answers: combine evidence packets from multiple tools.
+- No embedding provider: lexical retrieval remains available for local demos.
 
-- PDF/DOCX/PPTX: text chunk retrieval with file/page/slide/block locators.
-- Excel/CSV: schema-aware structured querying instead of embedding raw rows.
-- PPTX: slide/object/chart tools for deck-specific questions.
-- Hybrid questions: combine spreadsheet rows, text chunks, slide/chart evidence, and web sources when needed.
-
-This is the core design trade-off: use the retrieval shape that matches the document type.
-
-## Evidence and Citations
-
-Retrieval tools return structured evidence, not loose text blobs. The common evidence contract is `EvidencePacket` in `src/types.ts`:
-
-```text
-EvidencePacket
-  -> source: userId, sessionId, fileId, originalFilename, documentType
-  -> locator: page, slide, sheetId, rowNumber, blockId, chartId
-  -> content: text, row, table, summary
-  -> extractionStatus
-  -> warnings
-```
-
-Final answers should cite file identity and location, for example:
-
-```text
-[candidate_tracker.xlsx | sheet=tracker | row=42]
-[policy.pdf | page=7 | block=page_007_0003]
-[deck.pptx | slide=12 | chart=chart_002]
-```
-
-## Tool Surface
-
-Mastra tool wrappers live in `src/mastra/tools/documentTools.ts`:
-
-- `documents.initializeUpload`
-- `documents.list`
-- `documents.getManifest`
-- `documents.getStatus`
-- `documents.searchText`
-- `excel.listSheets`
-- `excel.getSchema`
-- `excel.previewRows`
-- `excel.queryRows`
-- `excel.describe`
-- `pptx.listSlides`
-- `pptx.getSlideMarkdown`
-- `pptx.getSlideStructure`
-- `pptx.getChartData`
-
-## Local Commands
-
-Install dependencies:
+## Useful Commands
 
 ```bash
-npm install
+npm run seed        # ingest data/samples into local-user/default-session
+npm run dev         # Mastra Studio
+npm run server      # minimal JSON API
+npm run chat        # local CLI chat
+npm run test        # smoke test over generic samples
+npm run typecheck   # TypeScript check
 ```
 
-Start Mastra Studio (recommended for chat UI / testing agents):
+You can ingest any supported folder:
 
 ```bash
-export GEMINI_API_KEY=...
-export GEMINI_MODEL=gemini-3-flash-preview
-export GEMINI_VISION_MODEL=gemini-3.1-pro-preview
-npm run dev
+npm run index -- --source=/absolute/path/to/documents --user=local-user --session=default-session
 ```
 
-Open the Studio UI:
-
-```bash
-open http://localhost:4111/
-```
-
-Start the minimal JSON API server (legacy):
-
-```bash
-export GEMINI_API_KEY=...
-export GEMINI_MODEL=gemini-3-flash-preview
-export GEMINI_VISION_MODEL=gemini-3.1-pro-preview
-npm run server
-```
-
-Health check:
+Minimal API examples:
 
 ```bash
 curl http://localhost:4111/health
-```
 
-Chat:
-
-```bash
-curl -X POST http://localhost:4111/chat \
-  -H 'content-type: application/json' \
-  -d '{"userId":"local-user","sessionId":"bpss-demo","message":"Which candidate files are not ready for BPSS closure?"}'
-```
-
-Upload:
-
-```bash
 curl -X POST http://localhost:4111/upload \
   -H 'content-type: application/json' \
-  -d '{"userId":"local-user","sessionId":"bpss-demo","sourcePath":"/absolute/path/to/file.pdf"}'
+  -d '{"userId":"local-user","sessionId":"default-session","sourcePath":"/absolute/path/to/file.pdf"}'
+
+curl -X POST http://localhost:4111/chat \
+  -H 'content-type: application/json' \
+  -d '{"userId":"local-user","sessionId":"default-session","message":"Summarize the uploaded files with citations."}'
 ```
 
-Check extraction status:
+## Interview Notes
 
-```bash
-curl http://localhost:4111/documents/<fileId>/status
-```
-
-Ingest the included BPSS dataset:
-
-```bash
-npm run index
-```
-
-Run PDF vision extraction with Gemini:
-
-```bash
-GEMINI_API_KEY=... GEMINI_MODEL=gemini-3-flash-preview GEMINI_VISION_MODEL=gemini-3.1-pro-preview npm run index
-```
-
-Model split:
-
-- `GEMINI_MODEL=gemini-3-flash-preview` for chat and agents.
-- `GEMINI_VISION_MODEL=gemini-3.1-pro-preview` for PDF page vision: better for OCR-like extraction, dense tables, and multimodal document reasoning.
-- Gemini 3 preview models can require "thought signatures" for tool calls; this repo injects a documented dummy signature when missing.
-
-If `GEMINI_API_KEY` is missing or the model call fails, page PNGs and local text Markdown are still persisted and the manifest records `partial` with page-level warnings.
-
-PDF production controls:
-
-```bash
-PDF_MAX_PAGES=250
-PDF_PAGE_CONCURRENCY=2
-PDF_RENDER_SCALE=2
-GEMINI_TIMEOUT_MS=60000
-GEMINI_RETRIES=2
-GEMINI_VISION_MODEL=gemini-3.1-pro-preview
-PDF_MIN_TEXT_CHARS=40
-```
-
-The extractor processes each page independently. Large, scanned, corrupt, or partially unreadable PDFs still produce whatever page artifacts can be safely generated, with warnings stored in `document.json` and `page_XXX.structure.json`.
-
-Start a local CLI chat/router:
-
-```bash
-npm run chat
-```
-
-Generate evidence candidates for the BPSS sample questions:
-
-```bash
-npm run bpss:answers
-```
-
-Type-check:
-
-```bash
-npm run typecheck
-```
-
-## RAG Trade-Offs
-
-The project is designed to support multiple retrieval approaches:
-
-- Markdown chunk retrieval for DOCX/PDF/PPTX narrative evidence.
-- Structured spreadsheet retrieval for Excel/CSV facts, dates, statuses, and row-level contradictions.
-- Hybrid retrieval where the Coordinator combines markdown citations with exact spreadsheet rows.
-
-This is deliberate: Excel questions should not be answered by embedding raw sheets when schema-aware querying is more reliable.
+The key design trade-off is matching retrieval to document shape. Narrative documents benefit from semantic chunking and vector search, while spreadsheets are safer with schema-aware row tools. Both paths normalize into `EvidencePacket[]`, so answer generation and evals can use one citation contract.

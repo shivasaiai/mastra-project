@@ -17,8 +17,9 @@ function injectDummyThoughtSignatures(bodyText: string): string {
         if (fc && typeof fc === "object") {
           // Gemini 3 tool calling requires a thought signature to be present in history.
           // When the upstream SDK doesn't preserve it, we can add a documented dummy signature.
-          if (fc.thought_signature == null && fc.thoughtSignature == null) {
-            fc.thought_signature = dummy;
+          if (part.thought_signature == null && part.thoughtSignature == null) {
+            part.thought_signature = dummy;
+            part.thoughtSignature = dummy;
           }
         }
       }
@@ -46,4 +47,26 @@ export function getDefaultModel() {
   }
 
   return openai(process.env.OPENAI_MODEL ?? "gpt-4o-mini");
+}
+
+export function hasEmbeddingProvider(): boolean {
+  return Boolean(process.env.OPENAI_API_KEY || process.env.GEMINI_API_KEY);
+}
+
+export function getEmbeddingDimension(): number {
+  if (process.env.GEMINI_API_KEY) {
+    const model = process.env.GEMINI_EMBEDDING_MODEL ?? "gemini-embedding-004";
+    if (model.includes("text-embedding-004")) return 768;
+    return 3072;
+  }
+  return 1536;
+}
+
+export function getDefaultEmbeddingModel() {
+  if (process.env.GEMINI_API_KEY) {
+    const google = createGoogleGenerativeAI({ apiKey: process.env.GEMINI_API_KEY });
+    return google.textEmbeddingModel(process.env.GEMINI_EMBEDDING_MODEL ?? "gemini-embedding-004");
+  }
+
+  return openai.embedding(process.env.OPENAI_EMBEDDING_MODEL ?? "text-embedding-3-small");
 }

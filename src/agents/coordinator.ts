@@ -2,11 +2,11 @@ import { Agent } from "@mastra/core/agent";
 import {
   documentsGetStatusTool,
   documentsListTool,
-  documentsSearchTextTool,
 } from "../mastra/tools/documentTools.js";
-import { researchSearchWebTool } from "../mastra/tools/researchTools.js";
+import { documentAnalystAgent } from "./documentAnalystAgent.js";
 import { getDefaultModel } from "../mastra/model.js";
 import { defaultMemory } from "../mastra/memory.js";
+import { researchAgent } from "./researchAgent.js";
 
 export const coordinatorInstructions = `
 You are the Coordinator / Router Agent for a session-scoped document analysis system.
@@ -14,11 +14,10 @@ You are the Coordinator / Router Agent for a session-scoped document analysis sy
 Responsibilities:
 - Decide whether the request needs uploaded documents, external research, or both.
 - Use only high-level tools for lightweight coordination and synthesis.
-- Hand document-heavy work to the Document Analyst Agent at the application routing layer.
-- Hand web-heavy work to the Research Agent at the application routing layer.
+- Delegate document-heavy work to the Document Analyst Agent.
+- Delegate web-heavy work to the Research Agent.
 - Never ask for or load raw document files directly.
 - Use document listing/status tools before assuming file IDs or readiness.
-- Use research.searchWeb before answering external or current-information questions.
 - State missing evidence explicitly and distinguish ready, partial, failed, and unsupported files.
 - Cite sources and uploaded-file locators whenever available.
 
@@ -30,14 +29,17 @@ Tool policy:
 export const coordinatorAgent = new Agent({
   id: "coordinatorAgent",
   name: "CoordinatorRouterAgent",
+  description: "Routes user requests to document analysis or web research specialists.",
   instructions: coordinatorInstructions,
   model: getDefaultModel(),
   memory: defaultMemory,
+  agents: {
+    documentAnalystAgent,
+    researchAgent,
+  },
   tools: {
     documentsListTool,
     documentsGetStatusTool,
-    documentsSearchTextTool,
-    researchSearchWebTool,
   },
 });
 

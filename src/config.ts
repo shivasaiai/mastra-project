@@ -1,12 +1,12 @@
 import path from "node:path";
 
 export const PROJECT_ROOT = path.resolve(process.cwd());
-export const DATASET_ROOT = path.resolve(PROJECT_ROOT, "bpss_agentic_dataset");
 export const DATA_DIR = path.resolve(PROJECT_ROOT, "data");
+export const SAMPLE_DATA_DIR = path.resolve(DATA_DIR, "samples");
 export const CACHE_DIR = path.resolve(PROJECT_ROOT, ".cache");
 
 export const DEFAULT_USER_ID = "local-user";
-export const DEFAULT_SESSION_ID = "bpss-demo";
+export const DEFAULT_SESSION_ID = "default-session";
 
 export const PARSER_VERSION = "2026-05-11";
 export const DEFAULT_GEMINI_CHAT_MODEL = "gemini-3-flash-preview";

@@ -1,6 +1,4 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-import { DATASET_ROOT, DEFAULT_SESSION_ID, DEFAULT_USER_ID } from "../config.js";
+import { DEFAULT_SESSION_ID, DEFAULT_USER_ID } from "../config.js";
 import { searchMarkdown } from "../services/documentTools.js";
 import { listDocuments, listSheets } from "../services/excelTools.js";
 import { ignoreBrokenPipe } from "../utils/stdio.js";
@@ -10,14 +8,14 @@ ignoreBrokenPipe();
 async function main() {
   const userId = DEFAULT_USER_ID;
   const sessionId = DEFAULT_SESSION_ID;
-  const sampleQuestions = await fs.readFile(path.join(DATASET_ROOT, "candidate_pack", "sample_questions.md"), "utf8");
-  const questions = sampleQuestions
-    .split("\n")
-    .map((line) => line.match(/^\d+\.\s+(.*)$/)?.[1])
-    .filter((question): question is string => Boolean(question));
+  const questions = [
+    "What are the main project risks mentioned in the uploaded documents?",
+    "Which sample records need follow-up?",
+    "Summarize the quarterly update with citations.",
+  ];
 
   const files = await listDocuments({ userId, sessionId });
-  console.log(`# BPSS Sample Question Evidence Plan\n`);
+  console.log(`# Sample Question Evidence Plan\n`);
   console.log(`Session: ${userId}/${sessionId}`);
   console.log(`Files: ${files.length}\n`);
 

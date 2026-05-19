@@ -1,7 +1,0 @@
-{
-  "page_number": 1,
-  "text_length": 2098,
-  "image_path": null,
-  "vision_markdown_status": "not_configured",
-  "warning": "Page image rendering and Gemini vision markdown are pluggable stages; local text extraction was used."
-}

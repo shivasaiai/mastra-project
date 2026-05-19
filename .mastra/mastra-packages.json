@@ -1,1 +1,1 @@
-[{"name":"@mastra/core","version":"1.32.1"},{"name":"@mastra/libsql","version":"1.10.0"},{"name":"@mastra/memory","version":"1.17.5"},{"name":"mastra","version":"1.8.1"}]
+[{"name":"@mastra/core","version":"1.32.1"},{"name":"@mastra/duckdb","version":"1.3.2"},{"name":"@mastra/evals","version":"1.2.2"},{"name":"@mastra/libsql","version":"1.10.0"},{"name":"@mastra/memory","version":"1.17.5"},{"name":"@mastra/observability","version":"1.12.0"},{"name":"@mastra/rag","version":"2.2.1"},{"name":"mastra","version":"1.8.1"}]

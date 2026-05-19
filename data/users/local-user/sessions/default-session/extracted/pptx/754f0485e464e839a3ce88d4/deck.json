@@ -1,0 +1,19 @@
+{
+  "file_id": "754f0485e464e839a3ce88d4",
+  "slide_count": 1,
+  "media_count": 0,
+  "chart_count": 0,
+  "slides": [
+    {
+      "slide_number": 1,
+      "title": "Slide 1",
+      "markdown": "extracted/pptx/754f0485e464e839a3ce88d4/slides/slide_001.md",
+      "structure": "extracted/pptx/754f0485e464e839a3ce88d4/slides/slide_001.structure.json"
+    }
+  ],
+  "media": [],
+  "charts": [],
+  "warnings": [
+    "PPTX extraction is XML-based; slide PNG rendering and precise geometry are optional future stages."
+  ]
+}

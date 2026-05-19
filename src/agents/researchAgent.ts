@@ -6,6 +6,8 @@ import { defaultMemory } from "../mastra/memory.js";
 export const researchAgent = new Agent({
   id: "researchAgent",
   name: "ResearchAgent",
+  description:
+    "Searches the web for current information, facts, and external sources. Returns answers with source URLs.",
   instructions: `
 You answer research questions using lookup tools.
 Search first, compare sources, include source URLs, and separate verified facts from uncertainty.

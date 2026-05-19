@@ -1,0 +1,53 @@
+{
+  "sheet_id": "sheet1",
+  "sheet_name": "Sheet1",
+  "row_count": 3,
+  "column_count": 4,
+  "header_row_index": 1,
+  "table_confidence": "high",
+  "columns": [
+    {
+      "name": "topic",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 3,
+      "sample_values": [
+        "Onboarding",
+        "Market research",
+        "Support trends"
+      ]
+    },
+    {
+      "name": "status",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 3,
+      "sample_values": [
+        "Ready",
+        "Needs follow-up"
+      ]
+    },
+    {
+      "name": "owner",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 3,
+      "sample_values": [
+        "Avery",
+        "Jordan",
+        "Sam"
+      ]
+    },
+    {
+      "name": "note",
+      "inferred_type": "string",
+      "null_count": 0,
+      "non_null_count": 3,
+      "sample_values": [
+        "Collect standard policy and handbook links for new hires.",
+        "Confirm the latest competitor pricing before the demo.",
+        "Top issues are billing questions and login recovery."
+      ]
+    }
+  ]
+}

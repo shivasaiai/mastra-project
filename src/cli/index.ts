@@ -1,5 +1,5 @@
 import path from "node:path";
-import { DATASET_ROOT, DEFAULT_SESSION_ID, DEFAULT_USER_ID } from "../config.js";
+import { DEFAULT_SESSION_ID, DEFAULT_USER_ID, SAMPLE_DATA_DIR } from "../config.js";
 import { initializeUploadAndWait } from "../document-store/intake.js";
 import { listFilesRecursive } from "../utils/fs.js";
 import { ignoreBrokenPipe } from "../utils/stdio.js";
@@ -16,7 +16,7 @@ function getArg(name: string, fallback: string): string {
 async function main() {
   const userId = getArg("user", DEFAULT_USER_ID);
   const sessionId = getArg("session", DEFAULT_SESSION_ID);
-  const source = path.resolve(getArg("source", DATASET_ROOT));
+  const source = path.resolve(getArg("source", SAMPLE_DATA_DIR));
   const files = (await listFilesRecursive(source)).filter((file) => supported.has(path.extname(file).toLowerCase()));
 
   console.log(`Ingesting ${files.length} supported files into ${userId}/${sessionId}`);

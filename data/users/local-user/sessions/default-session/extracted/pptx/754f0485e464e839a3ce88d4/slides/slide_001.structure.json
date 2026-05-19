@@ -1,0 +1,11 @@
+{
+  "slide_number": 1,
+  "source_part": "ppt/slides/slide1.xml",
+  "title_candidate": "Slide 1",
+  "render_path": null,
+  "object_count": 0,
+  "objects": [],
+  "warnings": [
+    "Slide rendering and precise relationship-level object geometry are not implemented in V1."
+  ]
+}

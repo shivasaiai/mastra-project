@@ -1,0 +1,5 @@
+| topic | status | owner | note |
+| --- | --- | --- | --- |
+| Onboarding | Ready | Avery | Collect standard policy and handbook links for new hires. |
+| Market research | Needs follow-up | Jordan | Confirm the latest competitor pricing before the demo. |
+| Support trends | Ready | Sam | Top issues are billing questions and login recovery. |

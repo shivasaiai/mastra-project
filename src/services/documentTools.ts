@@ -4,6 +4,7 @@ import { loadOrCreateManifest, getFileOrThrow } from "../document-store/manifest
 import { sessionRoot } from "../document-store/paths.js";
 import { buildEvidencePacket } from "../retrieval/evidence.js";
 import { searchTextEvidence } from "../retrieval/textIndex.js";
+import { searchVectorEvidence } from "../retrieval/vectorIndex.js";
 import { normalizeWhitespace, safeSnippet } from "../utils/text.js";
 
 function resolveSessionPath(userId: string, sessionId: string, relativePath: string): string {
@@ -86,14 +87,19 @@ export async function searchMarkdown(input: { userId: string; sessionId: string;
 }
 
 export async function searchDocuments(input: { userId: string; sessionId: string; fileId?: string; query: string; limit?: number }) {
+  const vectorEvidence = await searchVectorEvidence(input);
+  if (vectorEvidence.length > 0) return vectorEvidence;
   return searchTextEvidence(input);
 }
 
 export async function retrieveEvidence(input: { userId: string; sessionId: string; fileId?: string; query: string; limit?: number }) {
-  const evidence = await searchTextEvidence(input);
+  const vectorEvidence = await searchVectorEvidence(input);
+  const retrievalMode = vectorEvidence.length > 0 ? "vector" : "lexical";
+  const evidence = vectorEvidence.length > 0 ? vectorEvidence : await searchTextEvidence(input);
   const lowEvidence = evidence.length < 2;
   return {
     query: input.query,
+    retrievalMode,
     returned: evidence.length,
     lowEvidence,
     hint: lowEvidence
@@ -104,7 +110,7 @@ export async function retrieveEvidence(input: { userId: string; sessionId: strin
 }
 
 export async function retrieveEvidencePackets(input: { userId: string; sessionId: string; fileId?: string; query: string; limit?: number }) {
-  return searchTextEvidence(input);
+  return searchDocuments(input);
 }
 
 export async function listPptxSlides(input: { userId: string; sessionId: string; fileId: string }) {
