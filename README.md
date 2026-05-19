@@ -124,6 +124,3 @@ curl -X POST http://localhost:4111/chat \
   -d '{"userId":"local-user","sessionId":"default-session","message":"Summarize the uploaded files with citations."}'
 ```
 
-## Interview Notes
-
-The key design trade-off is matching retrieval to document shape. Narrative documents benefit from semantic chunking and vector search, while spreadsheets are safer with schema-aware row tools. Both paths normalize into `EvidencePacket[]`, so answer generation and evals can use one citation contract.
